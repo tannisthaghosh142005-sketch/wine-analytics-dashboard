@@ -4,31 +4,14 @@ import plotly.express as px
 
 st.set_page_config(layout="wide")
 
-import os
-
-
-
-
-# ===== AUTO DATA LOADER =====
-
-DATA_URL = "https://raw.githubusercontent.com/zygmuntz/wine-quality/master/data/winemag-data-130k-v2.csv"
+import pandas as pd
+import streamlit as st
 
 @st.cache_data
 def load_data():
-    st.info("Loading dataset from cloud source...")
-    df = pd.read_csv(DATA_URL)
-
-    # Basic cleaning
-    df = df.drop(columns=["Unnamed: 0"], errors="ignore")
-    df["price"].fillna(df["price"].median(), inplace=True)
-    df.dropna(inplace=True)
-
-    return df
+    return pd.read_csv("sample_data.csv")
 
 df = load_data()
-
-
-s
 
 
 # ===== FUTURISTIC BACKGROUND =====
