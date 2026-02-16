@@ -4,7 +4,25 @@ import plotly.express as px
 
 st.set_page_config(layout="wide")
 
-df = pd.read_csv("data/cleaned_wine_data.csv")
+import os
+
+
+DATA_PATH = "data/cleaned_wine_data.csv"
+
+# ===== AUTO DATA LOADER =====
+def load_data():
+    if not os.path.exists(DATA_PATH):
+        st.warning("Dataset not found. Downloading automatically...")
+
+        import subprocess
+
+        subprocess.run(["python", "pipeline/download_data.py"])
+        subprocess.run(["python", "pipeline/clean_data.py"])
+
+    return pd.read_csv(DATA_PATH)
+
+df = load_data()
+
 
 # ===== FUTURISTIC BACKGROUND =====
 st.markdown("""
