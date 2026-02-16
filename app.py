@@ -7,21 +7,28 @@ st.set_page_config(layout="wide")
 import os
 
 
-DATA_PATH = "data/cleaned_wine_data.csv"
+
 
 # ===== AUTO DATA LOADER =====
+
+DATA_URL = "https://raw.githubusercontent.com/zygmuntz/wine-quality/master/data/winemag-data-130k-v2.csv"
+
+@st.cache_data
 def load_data():
-    if not os.path.exists(DATA_PATH):
-        st.warning("Dataset not found. Downloading automatically...")
+    st.info("Loading dataset from cloud source...")
+    df = pd.read_csv(DATA_URL)
 
-        import subprocess
+    # Basic cleaning
+    df = df.drop(columns=["Unnamed: 0"], errors="ignore")
+    df["price"].fillna(df["price"].median(), inplace=True)
+    df.dropna(inplace=True)
 
-        subprocess.run(["python", "pipeline/download_data.py"])
-        subprocess.run(["python", "pipeline/clean_data.py"])
-
-    return pd.read_csv(DATA_PATH)
+    return df
 
 df = load_data()
+
+
+s
 
 
 # ===== FUTURISTIC BACKGROUND =====
